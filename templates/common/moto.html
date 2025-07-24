@@ -1,10 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "add-listing.html" %}
+{% block moto %}
+	<form method="post" enctype="multipart/form-data" class="row g-4">
+        {% csrf_token %}
+        <input type="hidden" name="category" value="motos">
+        {{ form.errors }}
+        <div class="col-12 col-md-6">
+          {{ form.title.label }}
+            {{ form.title }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.category.label }}
+            {{ form.category }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.make.label }}
+            {{ form.make }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.year.label }}
+            {{ form.year }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.price.label }}
+            {{ form.price }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.kilometers.label }}
+            {{ form.kilometers }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.engine_size.label }}
+            {{ form.engine_size }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.engine_type.label }}
+            {{ form.engine_type }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.fuel_type.label }}
+            {{ form.fuel_type }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.transmission.label }}
+            {{ form.transmission }}
+        </div>
+        <div class="col-12">
+          {{ form.location.label }}
+            {{ form.location }}
+        </div>
+
+        <div class="col-12">
+          {{ form.description.label }}
+            {{ form.description }}
+        </div>
+        <div class="col-12">
+          {{ form.image.label }}
+            {{ form.image }}
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-success btn-lg px-5">Добави мотор</button>
+        </div>
+      </form>
+{% endblock %}

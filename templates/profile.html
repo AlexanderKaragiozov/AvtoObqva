@@ -1,10 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'common/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm rounded">
+        <div class="card-body text-center">
+          <!-- Profile avatar placeholder -->
+
+            <div class="d-flex justify-content-end mb-3">
+
+                {% if can_edit %}
+                	<a href="{% url 'edit_profile' view.kwargs.pk %}" class="btn btn-primary me-3" title="Редактирай профила">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+
+                <!-- Delete Profile Button (POST recommended) -->
+                {% endif %}
+            {% if can_delete %}
+            <form action="{% url 'delete_profile' view.kwargs.pk %}" method="post" style="display:inline;" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger" title="Изтрий профила" onclick="return confirm('Сигурни ли сте, че искате да изтриете профила?');">
+                    <i class="bi bi-trash"></i> <!-- trash icon -->
+                  </button>
+                </form>
+            {% endif %}
+            </div>
+            {% if profile.profile_image %}
+            	 <img src="{{ profile.profile_image.url }}" alt="Profile Picture" class="rounded-circle mb-4" style="width: 120px; height: 120px; object-fit: cover;">
+            {% else %}
+             <img src="{% static 'images/anon-avatar.webp' %}" alt="Profile Picture" class="rounded-circle mb-4" style="width: 120px; height: 120px; object-fit: cover;">
+            {% endif %}
+          <!-- Hardcoded user info -->
+            <div>
+                 <h3 class="card-title mb-3">{{ profile.user.username }}</h3>
+                    {% if profile.first_name %}
+                  	    <p class="mb-1"><strong>Име:</strong> {{ profile.first_name }}</p>
+                  {% else %}
+                    <p class="mb-1"><strong>Име:</strong>........</p>
+                  {% endif %}
+
+                  {% if profile.phone_number %}
+                  	    <p class="mb-1"><strong>Телефон:</strong> {{ profile.phone_number }}</p>
+                  {% else %}
+                    <p class="mb-1"><strong>Телефон: </strong>........</p>
+                  {% endif %}
+                  {% if profile.location %}
+                  	<p class="mb-1"><strong>Местоположение:</strong> {{ profile.location }}</p>
+                   {% else %}
+                    <p class="mb-1"><strong>Местоположение:</strong>........</p>
+                    {% endif %}
+                    <p class="mb-1"><strong>Член от: </strong>{{ user.date_joined|date:"F d Y"}}</p>
+            </div>
+
+          <!-- See all listings button -->
+            {% if view.kwargs.pk == request.user.pk %}
+              <a href="{% url 'listings' user.pk %}" class="btn btn-primary btn-lg mt-4 px-5">
+                        Виж своите обяви
+
+              </a>
+            {% else%}
+                <a href="{% url 'listings' profile.user.pk %}" class="btn btn-primary btn-lg mt-4 px-5">
+                        Виж всички негови обяви
+                </a>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

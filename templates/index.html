@@ -1,10 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'common/base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery (required by Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    	<!-- Hero Section -->
+  <section class="hero" style="background-image: url('{% static 'images/Hero.jpeg' %}')">
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h1>НАМЕРИ ОФЕРТА БЪРЗО, ЛЕСНО И УДОБНО</h1>
+        <p>потърси най-добрите оферти на пазара</p>
+
+        <!-- Tabs -->
+        <div class="tabs" role="tablist">
+          <button class="tab active" role="tab" aria-selected="true" data-target="cars" id="tab-cars"><img class="tab-img" src="https://cdn-icons-png.flaticon.com/128/3085/3085330.png" alt=""></button>
+          <button class="tab" role="tab" aria-selected="false" data-target="boats" id="tab-boats"><img class="tab-img" src="https://cdn-icons-png.flaticon.com/128/1397/1397519.png" alt=""></button>
+          <button class="tab" role="tab" aria-selected="false" data-target="motos" id="tab-motos"><img class="tab-img" src="https://cdn-icons-png.flaticon.com/128/1768/1768201.png" alt=""></button>
+        </div>
+
+        <!-- Tab content forms -->
+        <div class="tab-content">
+          <div id="cars" class="active" role="tabpanel" aria-labelledby="tab-cars">
+            <form id="searchForm" class="search-form" method="get" action="">
+                <input type="hidden" name="form_type" value="cars">
+                 {{ car_form }}
+                  <div style="grid-column: span 4;">
+                    <button type="submit">Търсене на коли</button>
+                  </div>
+                </form>
+
+
+
+          </div>
+        <div id="boats"  role="tabpanel" aria-labelledby="tab-boats">
+          <form id="searchForm" class="search-form" method="get" action="">
+              <input type="hidden" name="form_type" value="boats">
+              {{ boat_form }}
+              <div style="grid-column: span 4;">
+                <button type="submit">Търсене на лодки</button>
+              </div>
+            </form>
+        </div>
+         <div id="motos" role="tabpanel" aria-labelledby="tab-motos">
+              <form id="searchForm" class="search-form" method="get" action="">
+                  <input type="hidden" name="form_type" value="motos">
+                {{ moto_form }}
+                <div style="grid-column: span 4;">
+                  <button type="submit">Търсене на мотори</button>
+                </div>
+              </form>
+        </div>
+    </div>
+      </div>
+    </div>
+  </section>
+
+
+ <section  class="search-results py-5">
+      <div class="container position-relative">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2 id="listings" class="position-absolute start-50 translate-middle-x m-0">Всички обяви</h2>
+            <a style="text-decoration: none" class="ms-auto badge bg-secondary fs-6" href="{% url 'home' %}#listings">Изчисти търсенето</a>
+        </div>
+    </div>
+      <hr>
+    <div class="row g-4">
+      <!-- Result 1 -->
+      {% for listing in listings %}
+        <div class="col-12 col-md-4">
+            <div class="card h-100 shadow-sm">
+
+
+            {% if listing.image %}
+                    <img class="card-img-top " style="height: 200px;object-fit: cover;object-position: center" src={{ listing.image.url }}>
+                {% else %}
+                    <img src="https://www.vistacars.in/assets/product_images/default.png" alt="{{ car.title }}" class="card-img-top" style="height: 200px;object-fit: cover;object-position: center">
+                {% endif %}
+
+
+
+                <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ listing.title }}</h5>
+                <p class="text-muted mb-2"><span style="color: black;font-weight: bold">{{ listing.year }}г.</span> {% if listing.type == 'car' or listing.type == 'moto' %}
+                	• <span style="color: rgba(136,3,26,0.56);font-weight: bold">{{ listing.kilometers }}</span> км.
+                {% endif %} • <span style="color: rgb(0,0,0);font-weight: bold">{{ listing.horsepower }}к.с.</span></p>
+                <p class="fw-bold mb-3">€{{ listing.price }}</p>
+                <ul class="list-unstyled mb-4">
+                  {% if listing.fuel_type %}
+                  	<li><strong>Горивна система:</strong> {{ listing.fuel_type }}</li>
+                  {% endif %}
+                  {% if listing.transmission %}
+                  	<li><strong>Трансмисия:</strong> {{ listing.transmission }}</li>
+                  {% endif %}
+                    {% if listing.capacity %}
+                    	<li><strong>Капацитет:</strong> {{ listing.capacity }} души</li>
+                    {% endif %}
+                    {% if listing.length %}
+                    	<li><strong>Дължина:</strong> {{ listing.capacity }}м.</li>
+                    {% endif %}
+                    {% if listing.material %}
+                    	<li><strong>Материал:</strong> {{ listing.material }}</li>
+                    {% endif %}
+                  <li><strong>Локация:</strong> {{ listing.location }}</li>
+                     <li><strong>Описание:</strong> {{ listing.description|truncatewords:20}}</li>
+                </ul>
+                {% if listing.type == 'car' %}
+                	<a href="{% url 'details' 'cars' listing.pk %}" class="mt-auto btn btn-outline-primary">ВИЖ ПОВЕЧЕ</a>
+                {% elif listing.type == 'boat' %}
+                    <a href="{% url 'details' 'boats' listing.pk %}" class="mt-auto btn btn-outline-primary">ВИЖ ПОВЕЧЕ</a>
+                {% elif listing.type == 'moto' %}
+                    <a href="{% url 'details' 'motos' listing.pk %}" class="mt-auto btn btn-outline-primary">ВИЖ ПОВЕЧЕ</a>
+                {% endif %}
+
+              </div>
+
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center mt-10" style="min-height: 300px;">
+              <img src="{% static 'images/sad-car.jpg' %}" alt="" style="height: 200px; object-fit: cover; object-position: center;background: transparent;">
+              <p class="mt-3 badge bg-primary fs-4">Няма намерени обяви</p>
+          </div>
+
+      {% endfor %}
+      </div>
+    </div>
+
+</section>
+    {% endblock %}
+
+

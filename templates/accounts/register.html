@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "common/base.html" %}
+{% block content %}
+<style>
+  body {
+    background: #f8f9fa;
+  }
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow rounded-4 p-4" style="width: 100%; max-width: 400px;">
+    <h3 class="text-center mb-4">📝 Регистрация</h3>
+    <form style="background: #fbf8ff" method="post" action="{% url 'register' %}">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div class="text-danger small">{{ field.errors|join:", " }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary w-100">Регистрирай се</button>
+    </form>
+    <div class="text-center mt-3">
+      <small>Вече имате акаунт? <a href="{% url 'login' %}" class="text-decoration-none">Вход</a></small>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

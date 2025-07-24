@@ -1,46 +1,154 @@
-{% extends 'base.html' %}
-
+{% extends 'common/base.html' %}
+{% load static %}
 {% block content %}
 <div class="container mt-5 mb-5">
-    <div class="card shadow rounded-4 border-0">
+    <div class="card shadow rounded-4 border-0 overflow-hidden">
+        <!-- Top Row: Image + Info -->
         <div class="row g-0">
             <!-- Image -->
-            {% if listing.image %}
+
             <div class="col-md-6">
-                <img src="{{ listing.image.url }}" class="img-fluid rounded-start-4 w-100 h-100 object-fit-cover" alt="{{ listing.title }}">
+
+
+            {% if vehicle.image %}
+                    <img src="{{ vehicle.image.url }}" class="img-fluid rounded-start-4 w-100 object-fit-cover" style="max-height: 500px;" alt="{{ listing.title }}">
+                {% else %}
+                    <img src="https://www.vistacars.in/assets/product_images/default.png" alt="{{ car.title }}" class="img-fluid rounded-start-4 w-100 object-fit-cover" style="max-height: 500px;">
+                {% endif %}
+
+
             </div>
-            {% endif %}
+
 
             <!-- Info -->
             <div class="col-md-6 p-4 d-flex flex-column justify-content-between">
                 <div>
-                    <h2 class="fw-bold mb-3">{{ listing.title }}</h2>
-                    <h4 class="text-success mb-4">{{ listing.price }} лв.</h4>
+
+                    <h2 class="fw-bold mb-3">{{ vehicle.title }}</h2>
+                    <h4 class="text-success mb-4">{{ vehicle.price }} €.</h4>
 
                     <ul class="list-unstyled">
-                        {% if listing.category %}<li><strong>Категория:</strong> {{ listing.category }}</li>{% endif %}
-                        {% if listing.make %}<li><strong>Марка:</strong> {{ listing.make }}</li>{% endif %}
-                        {% if listing.year %}<li><strong>Година:</strong> {{ listing.year }}</li>{% endif %}
-                        {% if listing.fuel_type %}<li><strong>Гориво:</strong> {{ listing.fuel_type }}</li>{% endif %}
-                        {% if listing.location %}<li><strong>Локация:</strong> {{ listing.location }}</li>{% endif %}
-                        <!-- Add more fields as needed -->
+                        {% if vehicle.category %}<li><strong>Категория:</strong> {{ vehicle.category }}</li>{% endif %}
+                        {% if vehicle.make %}<li><strong>Марка:</strong> {{ vehicle.make }}</li>{% endif %}
+                        {% if vehicle.model %}<li><strong>Модел:</strong> {{ vehicle.model }}</li>{% endif %}
+                        {% if vehicle.year %}<li><strong>Година:</strong> {{ vehicle.year }}г.</li>{% endif %}
+                        {% if vehicle.kilometers %}<li><strong>Километри:</strong> {{ vehicle.kilometers }} км.</li>{% endif %}
+                        {% if vehicle.fuel_type %}<li><strong>Гориво:</strong> {{ vehicle.fuel_type }}</li>{% endif %}
+                        {% if vehicle.location %}<li><strong>Локация:</strong> {{ vehicle.location }}</li>{% endif %}
                     </ul>
                 </div>
 
-                <div class="mt-4">
-                    <a href="{% url 'home' %}#listings" class="btn btn-outline-secondary me-2">← Обратно към обявите</a>
-                    <a href="#" class="btn btn-primary">Свържи се с продавача</a>
+                <div class="mt-4 bg-body-secondary border rounded-4 p-3 shadow-sm" style="max-width: 100%;">
+                  <div class="d-flex align-items-center">
+                    <!-- Seller Avatar -->
+                    <img src="{% if vehicle.owner.profile.proifle_image %}{{ vehicle.owner.profile.proifle_image.url }}{% else %}{% static 'images/anon-avatar.webp'%} {% endif %}"
+                         alt="Аватар на продавача"
+                         class="rounded-circle border me-3 shadow-sm"
+                         width="60" height="60"
+                         style="object-fit: cover;">
+
+                    <div>
+                        <a class="" href="{% url 'profile' vehicle.owner.pk %}"><h6 class="mb-1 fw-bold text-decoration-none text-dark">{{ vehicle.owner.profile.first_name }}</h6></a>
+                      <p class="mb-0 text-muted small"><i class="bi bi-geo-alt"></i> {{ vehicle.owner.profile.location }}</p>
+                    </div>
+                  </div>
+
+                  <hr class="my-3">
+
+                  <div class="small">
+                    <p class="mb-1"><i class="bi bi-telephone"></i> <strong>Телефон:</strong>
+                      <a href="tel:{{ vehicle.owner.profile.phone_number }}">{{ vehicle.owner.profile.phone_number }}</a>
+                    </p>
+
+                  </div>
+
+                  <div class="d-flex gap-2 mt-3">
+                    <a href="tel:{{ vehicle.owner.profile.phone_number }}" class="btn btn-sm btn-success w-100">
+                      📞 Обади се
+                    </a>
+
+
+                  </div>
+
                 </div>
+                <h6 class="fw-bold mb-3 text-muted"><span class="bi bi-eye-fill me-1"></span><b class="text-decoration-underline">{{ vehicle.views }}</b></span> преглеждания на обявата</h6>
+
             </div>
         </div>
-
         <!-- Description -->
-        {% if listing.description %}
+        {% if vehicle.description %}
         <div class="p-4 border-top">
             <h5 class="fw-semibold mb-3">Описание</h5>
-            <p class="text-muted">{{ listing.description }}</p>
+            <p class="text-muted">{{ vehicle.description }}</p>
         </div>
+        <!-- Map -->
+        {% if vehicle.location %}
+                <div class="row border-top">
+          <div class="p-4 col-md-6">
+              <h5 class="fw-semibold mb-3">Локация</h5>
+              <div class="rounded-3">
+                  <iframe
+                      src="https://www.google.com/maps?q={{ vehicle.location|urlencode }}&z=6&output=embed"
+                      style="border:0; max-width: 100%; max-height: 450px; height: 300px;"
+                      allowfullscreen
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade">
+                  </iframe>
+              </div>
+          </div>
+
+          <div class="p-4 col-md-6 bg-light rounded-4 shadow-sm">
+          <h5 class="fw-semibold mb-4 text-primary">Допълнителна информация (AI)</h5>
+              <div class="rounded-3 p-4 bg-white border border-secondary-subtle text-center">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="text-start">
+                            {{ message|safe }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h3 class="mb-3 fw-bold">Искаш допълнителна информация за превозното средство?</h3>
+                    <p class="mb-4 fs-5 text-muted">Натисни магическия бутон и открий още!</p>
+                    {% if vehicle.type == "car" %}
+                    	<form style="background: #FFFFFF;" action="{% url 'ask_ai' vehicle.make vehicle.model vehicle.year vehicle.horsepower %}" method="get">
+                            <button class="btn btn-warning btn-lg px-5 shadow-sm" title="Получаване на AI информация" type="submit">
+                                <i class="bi bi-stars fs-4 me-2"></i> Магически бутон
+                            </button>
+                        </form>
+                    {% elif vehicle.type == 'boat' %}
+                        <form style="background: #FFFFFF;" action="{% url 'ask_ai' vehicle.make vehicle.title vehicle.year vehicle.horsepower %}" method="get">
+                            <button class="btn btn-warning btn-lg px-5 shadow-sm" title="Получаване на AI информация" type="submit">
+                                <i class="bi bi-stars fs-4 me-2"></i> Магически бутон
+                            </button>
+                        </form>
+                    {% elif vehicle.type == 'boat' %}
+                        <form action="{% url 'ask_ai' vehicle.make vehicle.title vehicle.year vehicle.horsepower %}" method="get">
+                            <button class="btn btn-warning btn-lg px-5 shadow-sm" title="Получаване на AI информация" type="submit">
+                                <i class="bi bi-stars fs-4 me-2"></i> Магически бутон
+                            </button>
+                        </form>
+                    {% elif vehicle.type == 'moto' %}
+                        <form style="background: #FFFFFF;" action="{% url 'ask_ai' vehicle.make vehicle.category vehicle.year vehicle.engine_size %}" method="get">
+                            <button class="btn btn-warning btn-lg px-5 shadow-sm" title="Получаване на AI информация" type="submit">
+                                <i class="bi bi-stars fs-4 me-2"></i> Магически бутон
+                            </button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+
+
+        </div>
+
+
         {% endif %}
+
+
+        {% endif %}
+
+
+        </div>
     </div>
 </div>
 {% endblock %}

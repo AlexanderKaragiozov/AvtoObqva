@@ -1,10 +1,62 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ОбяваБГ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- In your <head> -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/tabs.js' %}" defer></script>
+    <script src="{% static 'js/querysearch.js' %}" defer></script>
+
 </head>
 <body>
-$END$
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <a href="{% url 'home' %}"><img src="{% static 'images/logo2.jpg' %}" alt="Logo"></a>
+      </div>
+      <ul class="nav-links">
+        <li><a id="lnk" class="permanent-marker-regular" href="{% url 'home' %}#listings">ОБЯВИ</a></li>
+        {% if user.is_authenticated %}
+        	<li><a id="lnk" class="permanent-marker-regular" href="{% url 'profile' request.user.pk %}">ПРОФИЛ</a></li>
+        <li><a id="lnk"class="permanent-marker-regular" href="{% url 'listings' request.user.pk %}">МОИТЕ ОБЯВИ</a></li>
+        <li><a id="lnk"class="permanent-marker-regular" href="{% url 'add_car' %}">ДОБАВИ ОБЯВА</a></li>
+            <li><a id="lnk" onclick="event.preventDefault();document.getElementById('logout-form').submit()" class="permanent-marker-regular" href="{% url 'logout' %}"><i class="bi bi-unlock2"></i></a></li>
+        {% endif %}
+        {% if not user.is_authenticated %}
+            <li><a id="lnk"class="permanent-marker-regular" href="{% url 'login' %}"><i class="bi bi-key-fill"></i></a></li>
+            <li><a id="lnk" class="permanent-marker-regular" href="{% url 'register' %}">РЕГИСТРАЦИЯ</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  <form id="logout-form" method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+  </form>
+{% block title %}
+	
+{% endblock %}
+{% block content %}
+	
+{% endblock %}
+
+  <footer class="footer">
+    <p>&copy; 2025 ОБЯВАбг. Всички права запазени </p>
+  </footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 </html>

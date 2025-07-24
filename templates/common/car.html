@@ -1,10 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "add-listing.html" %}
+{% block car %}
+
+      <form method="post" enctype="multipart/form-data" class="row g-4">
+        {% csrf_token %}
+          {{ form.errors }}
+          <div class="col-12 col-md-6">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+          </div>
+          <div class="col-12 col-md-6">
+            {{ form.category.label_tag }}
+            {{ form.category }}
+          </div>
+            <div class="col-12 col-md-6">
+            {{ form.make.label_tag }}
+            {{ form.make }}
+          </div>
+          <div class="col-12 col-md-6">
+            {{ form.model.label_tag }}
+            {{ form.model }}
+          </div>
+
+          <div class="col-12 col-md-6">
+            {{ form.year.label_tag }}
+            {{ form.year }}
+          </div>
+            <div class="col-12 col-md-6">
+            {{ form.kilometers.label_tag }}
+            {{ form.kilometers }}
+          </div>
+          <div class="col-12 col-md-6">
+            {{ form.price.label_tag }}
+            {{ form.price }}
+          </div>
+          <div class="col-12 col-md-6">
+            {{ form.horsepower.label_tag }}
+            {{ form.horsepower }}
+          </div>
+
+          <div class="col-12 col-md-6">
+            {{ form.fuel_type.label_tag }}
+            {{ form.fuel_type }}
+          </div>
+
+          <div class="col-12 col-md-6">
+            {{ form.transmission.label_tag }}
+            {{ form.transmission }}
+          </div>
+
+          <div class="col-12">
+            {{ form.location.label_tag }}
+            {{ form.location }}
+          </div>
+
+          <div class="col-12">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+          </div>
+
+          <div class="col-12">
+            {{ form.image.label_tag }}
+            {{ form.image }}
+          </div>
+
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-success btn-lg px-5">Добави автомобил</button>
+        </div>
+      </form>
+
+{% endblock %}

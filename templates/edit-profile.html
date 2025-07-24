@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'common/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm rounded">
+        <div class="card-body">
+
+          <h5 class="card-title text-center mb-4">Редактиране на профил</h5>
+
+          <form style="border-radius: 4px" class="pt-2 pb-2" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+              {{ form.errors }}
+               <div class="mb-3 text-center">
+                  {{ form.first_name.label }}
+              {{ form.first_name|add_class:"form-control w-50 mx-auto" }}
+            </div>
+               <div class="mb-3 text-center">
+                  {{ form.last_name.label }}
+              {{ form.last_name|add_class:"form-control w-50 mx-auto" }}
+            </div>
+            <div class="mb-3 mt-3 text-center">
+                {{ form.phone_number.label }}
+              {{ form.phone_number|add_class:"form-control  mx-auto w-50 mt-2" }}
+            </div>
+              <div class="mb-3 text-center">
+                  {{ form.location.label }}
+              {{ form.location|add_class:"form-control w-50 mx-auto" }}
+            </div>
+              <div class="mb-3 text-center">
+                  {{ form.profile_image.label }}
+              {{ form.profile_image|add_class:"w-50 mx-auto"}}
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Запази</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

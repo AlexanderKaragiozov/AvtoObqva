@@ -1,10 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Редактирай Обявата</h2>
+
+    <form method="post" enctype="multipart/form-data" class="row g-4">
+        {% csrf_token %}
+        {{ form.errors }}
+
+        {% if form.title %}
+        <div class="col-12 col-md-6">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+        </div>
+        {% endif %}
+
+        {% if form.category %}
+        <div class="col-12 col-md-6">
+            {{ form.category.label_tag }}
+            {{ form.category }}
+        </div>
+        {% endif %}
+
+        {% if form.make %}
+        <div class="col-12 col-md-6">
+            {{ form.make.label_tag }}
+            {{ form.make }}
+        </div>
+        {% endif %}
+
+        {% if form.model %}
+        <div class="col-12 col-md-6">
+            {{ form.model.label_tag }}
+            {{ form.model }}
+        </div>
+        {% endif %}
+
+        {% if form.year %}
+        <div class="col-12 col-md-6">
+            {{ form.year.label_tag }}
+            {{ form.year }}
+        </div>
+        {% endif %}
+
+        {% if form.kilometers %}
+        <div class="col-12 col-md-6">
+            {{ form.kilometers.label_tag }}
+            {{ form.kilometers }}
+        </div>
+        {% endif %}
+
+        {% if form.engine_size %}
+        <div class="col-12 col-md-6">
+            {{ form.engine_size.label_tag }}
+            {{ form.engine_size }}
+        </div>
+        {% endif %}
+
+        {% if form.engine_type %}
+        <div class="col-12 col-md-6">
+            {{ form.engine_type.label_tag }}
+            {{ form.engine_type }}
+        </div>
+        {% endif %}
+
+        {% if form.price %}
+        <div class="col-12 col-md-6">
+            {{ form.price.label_tag }}
+            {{ form.price }}
+        </div>
+        {% endif %}
+
+        {% if form.horsepower %}
+        <div class="col-12 col-md-6">
+            {{ form.horsepower.label_tag }}
+            {{ form.horsepower }}
+        </div>
+        {% endif %}
+        {% if form.capacity %}
+        	<div class="col-12 col-md-6">
+            {{ form.capacity.label_tag }}
+            {{ form.capacity }}
+        </div>
+        {% endif %}
+        {% if form.material %}
+        	<div class="col-12 col-md-6">
+            {{ form.material.label_tag }}
+            {{ form.material }}
+        </div>
+        {% endif %}
+        {% if form.fuel_type %}
+        <div class="col-12 col-md-6">
+            {{ form.fuel_type.label_tag }}
+            {{ form.fuel_type }}
+        </div>
+        {% endif %}
+
+        {% if form.transmission %}
+        <div class="col-12 col-md-6">
+            {{ form.transmission.label_tag }}
+            {{ form.transmission }}
+        </div>
+        {% endif %}
+        {% if form.length %}
+    	<div class="col-12 col-md-6">
+            {{ form.length.label_tag }}
+            {{ form.length }}
+        </div>
+        {% endif %}
+        {% if form.location %}
+        <div class="col-12">
+            {{ form.location.label_tag }}
+            {{ form.location }}
+        </div>
+        {% endif %}
+
+
+        {% if form.description %}
+        <div class="col-12">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </div>
+        {% endif %}
+
+        {% if form.image %}
+        <div class="col-12">
+            {{ form.image.label_tag }}
+            {{ form.image }}
+        </div>
+        {% endif %}
+
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success btn-lg px-5">Редактирай Обявата</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

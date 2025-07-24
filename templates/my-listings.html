@@ -1,37 +1,148 @@
 {% extends 'common/base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Моите обяви</h2>
+    {% if view.kwargs.pk == user.pk %}
+    	<h2>Моите обяви</h2>
+    {% else %}
+
     <div class="row">
         <div class="col-md-12">
+            <h3>Всички обяви на <span class="text-primary fw-bold">{{ listing_owner }}</span></h3>
+        </div>
+    </div>
+    {% endif %}
+{% if has_listings %}
+	{% if car_listings %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="badge bg-warning col-md-4 p-2 fs-6">Коли:</h2>
             <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start mb-2">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Yamaha SX210</h5>
-                        <small>01 Jul 2025</small>
+                {% for car in car_listings %}
+                <div class="list-group-item mb-4 rounded shadow-sm p-3 d-flex align-items-start gap-3">
+                    {% if car.image %}
+                    	<img src="{{ car.image.url }}" alt="{{ car.title }}" class="img-thumbnail flex-shrink-0" style="width: 160px; height: auto;">
+                    {% else %}
+                        <img src="https://www.vistacars.in/assets/product_images/default.png" alt="{{ car.title }}" class="img-thumbnail flex-shrink-0" style="width: 160px; height: auto;">
+                    {% endif %}
+                    <div class="flex-grow-1 d-flex flex-column">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">{{ car.title }}</h5>
+                                <small class="text-muted">{{ car.created_at }}</small>
+                            </div>
+                            <p class="mb-2">{{ car.description|truncatechars:200 }}</p>
+                            <small class="text-muted">Цена: {{ car.price }} € | Категория: {{ car.category }}</small>
+                        </div>
+                        {% if can_edit %}
+                        	<div class="mt-auto d-flex justify-content-end gap-2">
+                            <a href="{% url 'edit_listing' 'car' car.pk %}" class="btn btn-outline-primary btn-sm">Редактирай</a>
+                            {% if can_delete %}
+                                <form style="background:#FFFFFF" method="post" action="{% url 'delete_listing' 'car' car.pk %}" class="m-0 p-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Сигурни ли сте, че искате да изтриете тази обява?');">Изтрий</button>
+                            </form>
+                                {% endif %}
+                        </div>
+                        {% endif %}
                     </div>
-                    <p class="mb-1">Прекрасна лодка с нисък разход на гориво, подходяща за семейни излети и риболов.</p>
-                    <small>Цена: 25000 € | Категория: лодки</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start mb-2">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Bayliner Element E18</h5>
-                        <small>15 Jun 2025</small>
-                    </div>
-                    <p class="mb-1">Лодка с отлични характеристики за начинаещи и напреднали, удобна и стабилна.</p>
-                    <small>Цена: 18000 € | Категория: лодки</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start mb-2">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Honda BF50</h5>
-                        <small>28 May 2025</small>
-                    </div>
-                    <p class="mb-1">Мотор за лодка в отлично състояние, мощност 50 конски сили, икономичен.</p>
-                    <small>Цена: 4500 € | Категория: лодки</small>
-                </a>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
+    {% endif %}
+
+    {% if boat_listings %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2 class="badge bg-info col-md-4 p-2 fs-6">Лодки/Яхти:</h2>
+            <div class="list-group">
+                {% for boat in boat_listings %}
+                <div class="list-group-item mb-4 rounded shadow-sm p-3 d-flex align-items-start gap-3">
+                    {% if boat.image %}
+                    	<img src="{{ boat.image.url }}" alt="{{ boat.title }}" class="img-thumbnail flex-shrink-0" style="width: 160px; height: auto;">
+                    {% else %}
+                        <img src="https://www.vistacars.in/assets/product_images/default.png" alt="{{ car.title }}" class="img-thumbnail flex-shrink-0" style="width: 160px; height: auto;">
+                    {% endif %}
+                    <div class="flex-grow-1 d-flex flex-column">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">{{ boat.title }}</h5>
+                                <small class="text-muted">{{ boat.created_at }}</small>
+                            </div>
+                            <p class="mb-2">{{ boat.description|truncatechars:200 }}</p>
+                            <small class="text-muted">Цена: {{ boat.price }} € | Категория: {{ boat.category }}</small>
+                        </div>
+                        {% if can_edit %}
+                        	<div class="mt-auto d-flex justify-content-end gap-2">
+                            <a href="{% url 'edit_listing' 'boat' boat.pk %}" class="btn btn-outline-primary btn-sm">Редактирай</a>
+                            {% if can_delete %}
+                                <form style="background:#FFFFFF" method="post" action="{% url 'delete_listing' 'boat' boat.pk %}" class="m-0 p-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Сигурни ли сте, че искате да изтриете тази обява?');">Изтрий</button>
+                            </form>
+                                {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if moto_listings %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2 class="badge bg-primary col-md-4 p-2 fs-6">Мотоциклети:</h2>
+            <div class="list-group">
+                {% for moto in moto_listings %}
+                <div class="list-group-item mb-4 rounded shadow-sm p-3 d-flex align-items-start gap-3">
+                    {% if moto.image %}
+                    	<img src="{{ moto.image.url }}" alt="{{ moto.title }}" class="img-thumbnail flex-shrink-0" style="width: 160px; height: auto;">
+                    {% else %}
+                        <img src="https://www.vistacars.in/assets/product_images/default.png" alt="{{ car.title }}" class="img-thumbnail flex-shrink-0" style="width: 160px; height: auto;">
+                    {% endif %}
+                    <div class="flex-grow-1 d-flex flex-column">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">{{ moto.title }}</h5>
+                                <small class="text-muted">{{ moto.created_at }}</small>
+                            </div>
+                            <p class="mb-2">{{ moto.description|truncatechars:200 }}</p>
+                            <small class="text-muted">Цена: {{ moto.price }} € | Категория: {{ moto.category }}</small>
+                        </div>
+                        {% if can_edit %}
+                        	<div class="mt-auto d-flex justify-content-end gap-2">
+                            <a href="{% url 'edit_listing' 'moto' moto.pk %}" class="btn btn-outline-primary btn-sm">Редактирай</a>
+                            {% if can_delete %}
+                                <form style="background:#FFFFFF" method="post" action="{% url 'delete_listing' 'moto' moto.pk %}" class="m-0 p-0">
+                                {% csrf_token %}
+
+                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Сигурни ли сте, че искате да изтриете тази обява?');">Изтрий</button>
+                            </form>
+                                {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    {% endif %}
+    {% else %}
+    <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center mt-10" style="min-height: 300px;">
+              <img src="{% static 'images/sad-car.jpg' %}" alt="" style="height: 200px; object-fit: cover; object-position: center;background: transparent;">
+              <p class="mt-3 badge bg-primary fs-4">Няма намерени обяви</p>
+          </div>
+
+{% endif %}
+
 </div>
 {% endblock %}

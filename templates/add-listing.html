@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4 text-center">Добави нова обява</h1>
+</div>
+  <!-- Tabs -->
+
+   <div class="text-center">
+
+       <a href="{% url 'add_car' %}">
+        <img {% if car %}style="background: rgba(85,146,196,0.54);border: 2px solid green;border-radius: 4px"{% endif %} id="tab" class="tab-img" src="https://cdn-icons-png.flaticon.com/128/3085/3085330.png" alt="Motos">
+      </a>
+
+    <a href="{% url 'add_boat' %}">
+        <img {% if boat %}style="background: rgba(85,146,196,0.54);border: 2px solid green;border-radius: 4px"{% endif %} id="tab" class="tab-img" src="https://cdn-icons-png.flaticon.com/128/1397/1397519.png" alt="Motos">
+      </a>
+
+      <a href="{% url 'add_moto' %}">
+        <img {% if moto %}style="background: rgba(85,146,196,0.54);border: 2px solid green;border-radius: 4px"{% endif %} id="tab" class="tab-img" src="https://cdn-icons-png.flaticon.com/128/1768/1768201.png" alt="Motos">
+      </a>
+   </div>
+
+
+
+{% if car %}
+   <div class="container my-5 p-4 bg-light rounded shadow-sm">
+    {% block car %}{% endblock %}
+</div>
+
+  {% elif boat %}
+    <div class="container my-5 p-4 bg-light rounded shadow-sm">
+        {% block boat %}{% endblock %}
+    </div>
+  {% elif moto %}
+    <div class="container my-5 p-4 bg-light rounded shadow-sm">
+        {% block moto %}{% endblock %}
+    </div>
+  {% endif %}
+
+
+{% endblock %}
