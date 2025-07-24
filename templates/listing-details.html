@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow rounded-4 border-0">
+        <div class="row g-0">
+            <!-- Image -->
+            {% if listing.image %}
+            <div class="col-md-6">
+                <img src="{{ listing.image.url }}" class="img-fluid rounded-start-4 w-100 h-100 object-fit-cover" alt="{{ listing.title }}">
+            </div>
+            {% endif %}
+
+            <!-- Info -->
+            <div class="col-md-6 p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <h2 class="fw-bold mb-3">{{ listing.title }}</h2>
+                    <h4 class="text-success mb-4">{{ listing.price }} лв.</h4>
+
+                    <ul class="list-unstyled">
+                        {% if listing.category %}<li><strong>Категория:</strong> {{ listing.category }}</li>{% endif %}
+                        {% if listing.make %}<li><strong>Марка:</strong> {{ listing.make }}</li>{% endif %}
+                        {% if listing.year %}<li><strong>Година:</strong> {{ listing.year }}</li>{% endif %}
+                        {% if listing.fuel_type %}<li><strong>Гориво:</strong> {{ listing.fuel_type }}</li>{% endif %}
+                        {% if listing.location %}<li><strong>Локация:</strong> {{ listing.location }}</li>{% endif %}
+                        <!-- Add more fields as needed -->
+                    </ul>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{% url 'home' %}#listings" class="btn btn-outline-secondary me-2">← Обратно към обявите</a>
+                    <a href="#" class="btn btn-primary">Свържи се с продавача</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        {% if listing.description %}
+        <div class="p-4 border-top">
+            <h5 class="fw-semibold mb-3">Описание</h5>
+            <p class="text-muted">{{ listing.description }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
