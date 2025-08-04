@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.urls import reverse_lazy
 from django.forms.models import ModelForm
 from django.shortcuts import render,redirect
@@ -151,9 +153,14 @@ class UpdateListing(LoginRequiredMixin, UserPassMixin, UpdateView):
 
 
     template_name = "edit-listing.html"
+
     def get_success_url(self):
-        return reverse_lazy('listings', kwargs={'pk': self.request.user.pk})
+
+
+        return reverse_lazy('listings', kwargs={'pk': self.kwargs.get('pk')})
     def get_object(self):
+        self.referrer = self.request.META.get("HTTP_REFERER")
+        print(self.referrer)
         table = self.kwargs['table']
         if table == 'car':
             car = CarListing.objects.get(pk=self.kwargs['pk'])

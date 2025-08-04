@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls.base import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -45,7 +45,7 @@ class ProfileEditView(LoginRequiredMixin, UserPassMixin, UpdateView):
         return Profile.objects.get(user=self.kwargs['pk'])  # or use self.request.user.profile
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+
         return super().form_valid(form)
 
 class DeleteProfileView(LoginRequiredMixin, UserPassMixin, DeleteView):
@@ -69,3 +69,9 @@ class Register_View(CreateView):
     form_class = StyledRegisterForm
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('login')
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+        else:
+            return super().get(request, *args, **kwargs)
+
