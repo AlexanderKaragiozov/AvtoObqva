@@ -10,13 +10,14 @@ class UserPassMixin(UserPassesTestMixin):
 
             if self.request.user == profile.user:
                 return True
+
         except Profile.DoesNotExist:
             pass
 
 
 
-        if self.request.user.has_perm('offer.change_carlisting'):
-            return True
+        # if self.request.user.has_perm('offer.change_carlisting'):
+        #     return True
 
 
 

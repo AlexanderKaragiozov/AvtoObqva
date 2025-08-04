@@ -9,7 +9,7 @@ from django.views.generic import DetailView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.utils.safestring import mark_safe
-from offer.Mixins import ProfileDataRequired
+from offer.Mixins import ProfileDataRequired,EditListingPermissionRequired
 import offer,markdown
 from offer.ai_ask_request import run_ollama
 from offer.forms import CarListingCreationForm,BoatListingCreationForm,MotoListingCreationForm
@@ -149,7 +149,7 @@ class ListingDetails(DetailView):
             context['vehicle'] = self.object
             return render(request,'listing-details.html',context)
 
-class UpdateListing(LoginRequiredMixin, UserPassMixin, UpdateView):
+class UpdateListing(LoginRequiredMixin,EditListingPermissionRequired, UserPassMixin, UpdateView):
 
 
     template_name = "edit-listing.html"
