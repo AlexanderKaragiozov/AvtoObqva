@@ -27,6 +27,6 @@ from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(common_urls)),
-    path('listing/', include(offer_urls)),
+    path('listings/', include(offer_urls)),
     path('profile/',include(user_urls)),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

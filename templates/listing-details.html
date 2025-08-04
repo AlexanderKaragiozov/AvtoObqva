@@ -41,7 +41,7 @@
                 <div class="mt-4 bg-body-secondary border rounded-4 p-3 shadow-sm" style="max-width: 100%;">
                   <div class="d-flex align-items-center">
                     <!-- Seller Avatar -->
-                    <img src="{% if vehicle.owner.profile.proifle_image %}{{ vehicle.owner.profile.proifle_image.url }}{% else %}{% static 'images/anon-avatar.webp'%} {% endif %}"
+                    <img src="{% if vehicle.owner.profile.profile_image %}{{ vehicle.owner.profile.profile_image.url }}{% else %}{% static 'images/anon-avatar.webp'%} {% endif %}"
                          alt="Аватар на продавача"
                          class="rounded-circle border me-3 shadow-sm"
                          width="60" height="60"

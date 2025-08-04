@@ -34,10 +34,10 @@
         	<li><a id="lnk" class="permanent-marker-regular" href="{% url 'profile' request.user.pk %}">ПРОФИЛ</a></li>
         <li><a id="lnk"class="permanent-marker-regular" href="{% url 'listings' request.user.pk %}">МОИТЕ ОБЯВИ</a></li>
         <li><a id="lnk"class="permanent-marker-regular" href="{% url 'add_car' %}">ДОБАВИ ОБЯВА</a></li>
-            <li><a id="lnk" onclick="event.preventDefault();document.getElementById('logout-form').submit()" class="permanent-marker-regular" href="{% url 'logout' %}"><i class="bi bi-unlock2"></i></a></li>
+            <li><a id="lnk" onclick="event.preventDefault();document.getElementById('logout-form').submit()" class="permanent-marker-regular" href="{% url 'logout' %}">ИЗЛЕЗ</a></li>
         {% endif %}
         {% if not user.is_authenticated %}
-            <li><a id="lnk"class="permanent-marker-regular" href="{% url 'login' %}"><i class="bi bi-key-fill"></i></a></li>
+            <li><a id="lnk"class="permanent-marker-regular" href="{% url 'login' %}">ВЛЕЗ</a></li>
             <li><a id="lnk" class="permanent-marker-regular" href="{% url 'register' %}">РЕГИСТРАЦИЯ</a></li>
         {% endif %}
       </ul>

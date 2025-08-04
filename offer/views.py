@@ -7,7 +7,7 @@ from django.views.generic import DetailView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.utils.safestring import mark_safe
-
+from offer.Mixins import ProfileDataRequired
 import offer,markdown
 from offer.ai_ask_request import run_ollama
 from offer.forms import CarListingCreationForm,BoatListingCreationForm,MotoListingCreationForm
@@ -29,7 +29,7 @@ from user.models import Profile
 #     ## PROBLEMA E V JAVASCRIPTA
 #     return render(request,'common/car.html',context)
 
-class CarListingCreateView(LoginRequiredMixin,CreateView):
+class CarListingCreateView(ProfileDataRequired,LoginRequiredMixin,CreateView):
     model = offer.models.CarListing
     form_class = CarListingCreationForm
     template_name = "common/car.html"
@@ -48,7 +48,7 @@ class CarListingCreateView(LoginRequiredMixin,CreateView):
 
         return response
 
-class BoatListingCreateView(CreateView,LoginRequiredMixin):
+class BoatListingCreateView(CreateView,LoginRequiredMixin , ProfileDataRequired):
     model = offer.models.BoatListing
     form_class = BoatListingCreationForm
     template_name = "common/boat.html"
@@ -67,7 +67,7 @@ class BoatListingCreateView(CreateView,LoginRequiredMixin):
 
         return response
 
-class MotoListingCreateView(CreateView,LoginRequiredMixin):
+class MotoListingCreateView(CreateView,LoginRequiredMixin,ProfileDataRequired):
     model = offer.models.MotoListing
     form_class = MotoListingCreationForm
     template_name = "common/moto.html"
